@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MainChat – User Details</title>
+  <title>MainChat | Details</title>
 
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Tailwind Config -->
   <script>
     tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
           animation: {
-            fade: "fadeIn 0.6s ease-out",
+            fade: "fadeIn 0.4s ease-out",
             spinSlow: "spin 1s linear infinite",
           },
           keyframes: {
             fadeIn: {
-              "0%": { opacity: 0, transform: "translateY(10px)" },
+              "0%": { opacity: 0, transform: "translateY(8px)" },
               "100%": { opacity: 1, transform: "translateY(0)" },
             },
           },
@@ -30,54 +29,150 @@
   </script>
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-indigo-600 to-purple-700 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 transition-colors">
+<body class="min-h-screen bg-gradient-to-br from-indigo-600 to-purple-700 
+             dark:from-gray-900 dark:to-black 
+             flex items-center justify-center px-4 transition-colors duration-300">
 
   <!-- Dark Mode Toggle -->
   <button id="themeToggle"
-    class="absolute top-5 right-5 bg-white dark:bg-gray-700 text-gray-800 dark:text-white px-4 py-2 rounded-full shadow hover:scale-105 transition">
+    class="absolute top-5 right-5 bg-white dark:bg-gray-800 
+           text-gray-800 dark:text-white 
+           px-4 py-2 rounded-full shadow transition">
     🌙
   </button>
 
   <!-- Card -->
-  <div class="bg-white dark:bg-gray-900 w-full max-w-md rounded-2xl shadow-2xl p-8 animate-fade transition">
+  <div class="bg-white dark:bg-gray-900 w-full max-w-md rounded-2xl shadow-2xl p-8 animate-fade">
 
-    <!-- Logo Badge -->
+    <!-- Logo -->
     <div class="flex justify-center mb-4">
-      <div class="bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg">
-        <img
-          src="logo.jpeg"
-          alt="MainChat Logo"
-          class="w-16 h-16 object-contain"
-        />
+      <div class="bg-white dark:bg-gray-800 p-3 rounded-full shadow">
+        <img src="logo.jpeg" class="w-16 h-16 object-contain" alt="MainChat">
       </div>
     </div>
 
-    <h1 class="text-2xl font-bold text-gray-800 dark:text-white text-center">
-      Welcome to MainChat
+    <h1 class="text-2xl font-bold text-center text-gray-800 dark:text-white">
+      MainChat
     </h1>
-    <p class="text-gray-500 dark:text-gray-400 text-center mb-6">
-      Enter your details to continue
-    </p>
+   
 
-    <!-- Form -->
-    <form id="userForm" class="space-y-4">
+    <!-- STEP 1 FORM -->
+    <form id="detailsForm" class="space-y-4">
 
-      <div>
-        <label class="text-sm text-gray-600 dark:text-gray-300">Full Name</label>
-        <input type="text" required
-          class="w-full mt-1 px-4 py-2 rounded-lg border dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition">
-      </div>
+      <input id="name" type="text" placeholder="Full Name" required
+        class="w-full px-4 py-2 rounded-lg border 
+               bg-white dark:bg-gray-800 
+               text-gray-800 dark:text-white 
+               dark:border-gray-700
+               focus:ring-2 focus:ring-indigo-500 outline-none">
 
-      <div>
-        <label class="text-sm text-gray-600 dark:text-gray-300">Phone Number</label>
-        <input type="tel" required
-          class="w-full mt-1 px-4 py-2 rounded-lg border dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition">
-      </div>
+      <input id="phone" type="tel" placeholder="Phone Number" required
+        class="w-full px-4 py-2 rounded-lg border 
+               bg-white dark:bg-gray-800 
+               text-gray-800 dark:text-white 
+               dark:border-gray-700
+               focus:ring-2 focus:ring-indigo-500 outline-none">
 
-      <div>
-        <label class="text-sm text-gray-600 dark:text-gray-300">Email Address</label>
-        <input type="email" required
-          class="w-full mt-1 px-4 py-2 rounded-lg border dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition">
-      </div>
+      <input id="email" type="email" placeholder="Email Address" required
+        class="w-full px-4 py-2 rounded-lg border 
+               bg-white dark:bg-gray-800 
+               text-gray-800 dark:text-white 
+               dark:border-gray-700
+               focus:ring-2 focus:ring-indigo-500 outline-none">
 
-      <!-- Button -->
+      <button type="submit"
+        class="w-full bg-indigo-600 hover:bg-indigo-700 
+               text-white py-2 rounded-lg font-semibold transition">
+        Continue
+      </button>
+    </form>
+
+    <!-- STEP 2 VERIFY -->
+    <div id="verifyBox" class="hidden animate-fade mt-4 text-center">
+
+      <p class="text-gray-600 dark:text-gray-300 mb-4">
+        Please verify your details
+      </p>
+
+      <button id="verifyBtn"
+        class="w-full bg-green-600 hover:bg-green-700 
+               text-white py-2 rounded-lg font-semibold flex justify-center gap-2 items-center">
+        <span id="verifyText">Verify Details</span>
+        <span id="loader" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spinSlow"></span>
+      </button>
+    </div>
+
+   <!-- SUCCESS -->
+<div id="successMsg"
+  class="hidden animate-fade mt-8 text-center">
+
+  <!-- Animated Check -->
+  <div class="flex justify-center mb-4">
+    <div class="w-20 h-20 rounded-full bg-green-500 flex items-center justify-center
+                animate-pulse shadow-lg">
+      <svg xmlns="http://www.w3.org/2000/svg" 
+           class="w-10 h-10 text-white animate-bounce" 
+           fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+              d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+  </div>
+
+  <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">
+    Details Captured!
+  </h2>
+
+  <p class="text-gray-500 dark:text-gray-400">
+    Your information has been saved successfully.<br/>
+    Thank you for joining MainChat 💜
+  </p>
+
+</div>
+
+
+  <!-- JS -->
+  <script>
+    const html = document.documentElement;
+    const toggle = document.getElementById("themeToggle");
+
+    // Load theme correctly
+    if (localStorage.theme === "dark") {
+      html.classList.add("dark");
+      toggle.textContent = "☀️";
+    }
+
+    toggle.onclick = () => {
+      html.classList.toggle("dark");
+      const dark = html.classList.contains("dark");
+      toggle.textContent = dark ? "☀️" : "🌙";
+      localStorage.theme = dark ? "dark" : "light";
+    };
+
+    const form = document.getElementById("detailsForm");
+    const verifyBox = document.getElementById("verifyBox");
+    const verifyBtn = document.getElementById("verifyBtn");
+    const loader = document.getElementById("loader");
+    const verifyText = document.getElementById("verifyText");
+    const successMsg = document.getElementById("successMsg");
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      verifyBox.classList.remove("hidden");
+    });
+
+    verifyBtn.addEventListener("click", () => {
+      loader.classList.remove("hidden");
+      verifyText.textContent = "Verifying...";
+
+      setTimeout(() => {
+        loader.classList.add("hidden");
+        verifyBox.classList.add("hidden");
+        form.classList.add("hidden");
+        successMsg.classList.remove("hidden");
+      }, 2000);
+    });
+  </script>
+
+</body>
+</html>
